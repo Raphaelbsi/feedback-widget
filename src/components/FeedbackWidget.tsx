@@ -6,6 +6,7 @@ import {
   sendToNotion,
   sendToTrello
 } from '../helpers/SendfeedBack';
+import { FaBug } from 'react-icons/fa';
 
 interface FeedbackWidgetProps {
   integrationType: 'googleForms' | 'trello' | 'monday' | 'notion';
@@ -16,6 +17,7 @@ interface FeedbackWidgetProps {
   boardId?: string;
   formId?: string;
   entryIds?: { [key: string]: string };
+  theme?: 'light' | 'dark';
 }
 
 const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
@@ -26,13 +28,16 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   listId,
   boardId,
   formId,
-  entryIds
+  entryIds,
+  theme = 'light'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [screenshot, setScreenshot] = useState<string | null>(null);
   const [feedback, setFeedback] = useState('');
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
+
+  const isDarkMode = theme === 'dark';
 
   // Função para capturar a tela
   const captureScreen = async () => {
@@ -127,7 +132,7 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          backgroundColor: '#6200ea',
+          backgroundColor: isDarkMode ? '#333' : '#6200ea',
           color: 'white',
           borderRadius: '50%',
           width: '50px',
@@ -142,7 +147,7 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
           zIndex: 2000
         }}
       >
-        +
+        <FaBug />
       </button>
 
       {/* Modal de feedback */}
@@ -163,7 +168,7 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
         >
           <div
             style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: isDarkMode ? '#222' : '#ffffff',
               padding: '30px',
               borderRadius: '10px',
               width: '90%',
