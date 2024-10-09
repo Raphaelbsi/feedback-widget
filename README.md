@@ -1,46 +1,116 @@
-# Getting Started with Create React App
+# Feedbacktobigest
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The feedbacktobigest is a lightweight React component designed to capture user feedback directly on your web application. It supports multiple integrations like Google Forms, Trello, Monday, and Notion.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Capture user feedback with a form and a screenshot of the page.
+- Send feedback directly to Google Forms, Trello, Monday, or Notion.
+- Easily integrate into any React or Next.js application.
 
-### `npm start`
+##### Using npm
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+###### `npm install feedbacktobigest`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+##### Using yarn
 
-### `npm test`
+###### `yarn add feedbacktobigest`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
 
-### `npm run build`
+To use the Feedbacktobigest component, import it into your React or Next.js component and configure it according to your chosen integration.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```typescript
+import React from 'react';
+import FeedbackWidget from 'feedbacktobigest';
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+const App = () => {
+  return (
+    <div>
+      <h1>Welcome to My App</h1>
+      <FeedbackWidget
+        integrationType='notion' // Change to 'googleForms', 'trello', or 'monday'
+        endpointUrl='https://api.notion.com/v1'
+        apiKey='YOUR_NOTION_API_KEY'
+        formId='YOUR_NOTION_DATABASE_ID'
+      />
+    </div>
+  );
+};
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+export default App;
+```
 
-### `npm run eject`
+# Available Props
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+| Prop              | Type   | Description                                                                         |
+| ----------------- | ------ | ----------------------------------------------------------------------------------- |
+| `integrationType` | string | Type of integration (`googleForms`, `trello`, `monday`, `notion`).                  |
+| `endpointUrl`     | string | The URL of the endpoint to send the data (API URL of the chosen integration).       |
+| `apiKey`          | string | API key for authentication with Trello, Monday, or Notion.                          |
+| `token`           | string | Trello token for authentication.                                                    |
+| `listId`          | string | Trello list ID to send feedback cards.                                              |
+| `boardId`         | string | Monday board ID to create items.                                                    |
+| `formId`          | string | Google Form ID or Notion Database ID.                                               |
+| `entryIds`        | object | An object mapping entry fields (Google Forms specific: name, feedback, screenshot). |
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Integration Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Each integration requires different parameters. Here’s a guide for each:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Google Forms
+   - Set the integrationType to googleForms.
+   - Provide the formId and entryIds mapping for your form fields. Make sure to use the entry.xxxx values provided by Google Forms.
+2. Trello
+   - Set the integrationType to trello.
+   - Provide the apiKey, token, and listId to identify where to send the feedback.
+3. Monday
+   - Set the integrationType to monday.
+   - Provide the apiKey and boardId to create items in your board.
+4. Notion
+   - Set the integrationType to notion.
+   - Provide the apiKey, formId (Database ID), and endpointUrl (https://api.notion.com/v1).
 
-## Learn More
+## Example Configurations for Integrations
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1.  Notion
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```typescript
+<FeedbackWidget
+  integrationType='notion'
+  endpointUrl='https://api.notion.com/v1'
+  apiKey='YOUR_NOTION_API_KEY'
+  formId='YOUR_NOTION_DATABASE_ID'
+/>
+```
+
+2.  Trello
+
+```typescript
+<FeedbackWidget
+  integrationType='trello'
+  endpointUrl='https://api.trello.com/1/cards'
+  apiKey='YOUR_TRELLO_API_KEY'
+  token='YOUR_TRELLO_TOKEN'
+  listId='YOUR_TRELLO_LIST_ID'
+/>
+```
+
+3. GoogleForms
+
+```typescript
+<FeedbackWidget
+  integrationType='googleForms'
+  endpointUrl='https://docs.google.com/forms/d/e/YOUR_GOOGLE_FORM_ID/formResponse'
+  formId='YOUR_GOOGLE_FORM_ID'
+  entryIds={{
+    name: 'entry.123456789',
+    feedback: 'entry.987654321',
+    screenshot: 'entry.192837465'
+  }}
+/>
+```
+
+# License
+
+This project is licensed under the MIT License
