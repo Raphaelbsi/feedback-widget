@@ -4,12 +4,13 @@ import {
   sendToGoogleForms,
   sendToMonday,
   sendToNotion,
-  sendToTrello
+  sendToTrello,
+  sendToClickUp
 } from '../helpers/SendfeedBack';
 import { FaBug } from 'react-icons/fa';
 
 interface FeedbackWidgetProps {
-  integrationType: 'googleForms' | 'trello' | 'monday' | 'notion';
+  integrationType: 'googleForms' | 'trello' | 'monday' | 'notion' | 'clickUp';
   endpointUrl: string;
   apiKey?: string;
   token?: string;
@@ -58,7 +59,9 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
         date: date ?? '',
         feedback: feedback ?? '',
         screenshot: screenshot ?? '',
-        url: endpointUrl ?? ''
+        url: endpointUrl ?? '',
+        apiKey: apiKey ?? '',
+        listId: listId ?? ''
       };
 
       try {
@@ -101,6 +104,12 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
               databaseId: formId ?? '',
               apiKey: apiKey ?? ''
             });
+            break;
+          case 'clickUp':
+            await sendToClickUp({
+              ...payload
+            });
+            break;
           default:
             console.log('Nenhuma integração definida.');
         }
@@ -342,7 +351,12 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
                 Enviar
               </button>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setName('');
+                  setScreenshot(null);
+                  setFeedback('');
+                }}
                 style={{
                   padding: '10px 20px',
                   backgroundColor: '#757575',

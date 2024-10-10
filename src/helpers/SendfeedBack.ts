@@ -176,3 +176,41 @@ export const sendToNotion = async (data: NotionData) => {
     body: JSON.stringify(payload),
   });
 };
+
+
+interface ClickUpData {
+  name: string;
+  feedback: string;
+  screenshot?: string | null;
+  date: string;
+  url: string;
+  apiKey: string;
+  listId: string;
+}
+
+export const sendToClickUp = async (data: ClickUpData) => {
+  const payload = {
+    name: data.name,
+    content: data.feedback,
+    status: 'open',
+    priority: 1,
+    due_date: data.date,
+    attachments: data.screenshot ? [{ url: data.screenshot }] : undefined,
+  };
+
+  const url = `https://api.clickup.com/api/v2/list/${data.listId}/task`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': data.apiKey,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Erro ao enviar feedback para ClickUp: ${response.status} - ${errorText}`);
+  }
+};
