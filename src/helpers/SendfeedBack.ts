@@ -189,12 +189,13 @@ interface ClickUpData {
 }
 
 export const sendToClickUp = async (data: ClickUpData) => {
+  const dueDateTimestamp = new Date(data.date).getTime();
   const payload = {
     name: data.name,
     content: data.feedback,
     status: 'open',
     priority: 1,
-    due_date: data.date,
+    due_date: dueDateTimestamp,
     attachments: data.screenshot ? [{ url: data.screenshot }] : undefined,
   };
 
@@ -204,7 +205,7 @@ export const sendToClickUp = async (data: ClickUpData) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': data.apiKey,
+      'Authorization': `Bearer ${data.apiKey}`,
     },
     body: JSON.stringify(payload),
   });
