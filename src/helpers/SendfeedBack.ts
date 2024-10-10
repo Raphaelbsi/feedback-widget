@@ -198,7 +198,7 @@ export const sendToClickUp = async (data: ClickUpData) => {
     attachments: data.screenshot ? [{ url: data.screenshot }] : undefined,
   };
 
-  const url = `https://api.clickup.com/api/v2/list/${data.listId}/task`;
+  const url = data.url;
 
   const response = await fetch(url, {
     method: 'POST',

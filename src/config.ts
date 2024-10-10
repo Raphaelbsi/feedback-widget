@@ -1,5 +1,5 @@
 export interface FeedbackWidgetConfig {
-  integrationType: 'googleForms' | 'trello' | 'monday' | 'notion';
+  integrationType: 'googleForms' | 'trello' | 'monday' | 'notion' | 'clickUp';
   endpointUrl: string;
   apiKey?: string;
   token?: string;
