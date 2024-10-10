@@ -193,22 +193,30 @@ export const sendToClickUp = async (data: ClickUpData) => {
   const payload = {
     name: data.name,
     content: data.feedback,
-    status: 'open',
     priority: 1,
-    due_date: dueDateTimestamp,
     attachments: data.screenshot ? [{ url: data.screenshot }] : undefined,
   };
 
   const url = `https://api.clickup.com/api/v2/list/${data.listId}/task`;
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${data.apiKey}`,
-    },
-    body: JSON.stringify(payload),
-  });
+  const query = new URLSearchParams({
+    custom_task_ids: 'true',
+    team_id: '123'
+  }).toString();
+
+  const listId = data.listId
+
+  const response = await fetch(
+    `https://api.clickup.com/api/v2/list/${listId}/task?${query}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: data.apiKey
+      },
+      body: JSON.stringify(payload)
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
