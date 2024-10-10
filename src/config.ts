@@ -1,6 +1,6 @@
 export interface FeedbackWidgetConfig {
   integrationType: 'googleForms' | 'trello' | 'monday' | 'notion' | 'clickUp';
-  endpointUrl: string;
+  endpointUrl?: string;
   apiKey?: string;
   token?: string;
   listId?: string;
@@ -12,5 +12,4 @@ export interface FeedbackWidgetConfig {
 
 export const defaultConfig: FeedbackWidgetConfig = {
   integrationType: 'googleForms',
-  endpointUrl: '',
 };

@@ -11,7 +11,7 @@ import { FaBug } from 'react-icons/fa';
 
 interface FeedbackWidgetProps {
   integrationType: 'googleForms' | 'trello' | 'monday' | 'notion' | 'clickUp';
-  endpointUrl: string;
+  endpointUrl?: string;
   apiKey?: string;
   token?: string;
   listId?: string;
@@ -100,7 +100,7 @@ const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
               feedback: payload.feedback,
               screenshot: payload.screenshot,
               date: payload.date,
-              url: endpointUrl,
+              url: endpointUrl ?? '',
               databaseId: formId ?? '',
               apiKey: apiKey ?? ''
             });
